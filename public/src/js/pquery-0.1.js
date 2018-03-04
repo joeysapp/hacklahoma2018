@@ -18,13 +18,17 @@ function setup(){
 	globe.parent('view');
 	globe.style("position: absolute; top: 0px;");
 
-	createOptions();
+	createOptions(foo);
 	cur_data = loadJSON('src/data/dummy-data.json', getCartesianCoords);
 
 	cam = new Dw.EasyCam(this._renderer, {distance:(R*2), center:[0,0,0]});
 
 	// globe_img = loadImage('src/data/earth.jpg', function(i){ g = i; });
 	globe_img = loadImage('src/data/1024x512.png', function(i){ g = i; });
+}
+
+function foo(){
+	// console.log(selectAll('income_id'));
 }
 
 function draw(){
@@ -63,12 +67,16 @@ function getCartesianCoords(data){
 
 // Used when the go! button (#submit_i) is clicked
 function submitOptions(event){
+	console.log()
 	var data = {
 		'gender': options[0].checked(),
 		'employed': options[1].checked(),
 		'married': options[2].checked(),
-		'income': options[3].value(),
-		'location': options[4].value()
+		'income_high': $('#income_id.multirange.original')[0].valueHigh,
+		'income_low': $('#income_id.multirange.original')[0].valueLow,
+		'age_high': $('#age_id.multirange.original')[0].valueHigh,
+		'age_low': $('#age_id.multirange.original')[0].valueLow,
+		'location': options[5].value()
 	}
 	socket.emit('submitOptions', data);
 }
@@ -100,7 +108,7 @@ function toCartesian(lat, lon){
 	return tmp
 }
 
-function createOptions(){
+function createOptions(verifyGhostSlider){
 	var gender = createCheckbox(false);
 	gender.parent('#gender_i');
 
@@ -110,8 +118,12 @@ function createOptions(){
 	var married = createCheckbox(false);
 	married.parent('#married_i');
 
-	var income = createSlider(0,1000,1000,5);
-	income.parent('#income_i');
+	var multirange_sliders = selectAll('.multirange ghost');
+	var income = multirange_sliders[0];
+	income.id('income_id');
+
+	var age = multirange_sliders[1];
+	age.id('age_id');
 
 	var location = createInput();
 	location.parent('#location_i');
@@ -119,7 +131,9 @@ function createOptions(){
 	var submit = createButton('go!');
 	submit.parent('#submit_i');
 
-	options.push(gender, employed, married, income, location);
+	options.push(gender, employed, married, location);
+	
+	// Rework this if we want the below feature, otherwise whatever
 	options.forEach(function(e, idx){
 		e.style('display:inline-block');
 
@@ -128,8 +142,13 @@ function createOptions(){
 		// we call our node server and hope for a response
 		// e.changed(optionChange);
 	});
+	options.splice(3, 0, income);
+	options.splice(4, 0, age);
 	// Otherwise, single submit button:
 	submit.mousePressed(submitOptions);
+	// verifyGhostSlider();
+
+
 }
 
 class DataPoint {
