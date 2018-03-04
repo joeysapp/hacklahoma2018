@@ -58,7 +58,8 @@ function getCartesianCoords(data){
 	for (var key in Object.keys(data[0].list)){
 		var lat = data[0].list[key].lat;
 		var lon = data[0].list[key].lng;
-		var new_dp = toCartesian(lat,lon);
+		var price = data[0].list[key].avg_cost;
+		var new_dp = toCartesian(lat,lon,price);
 		cur_coords.push(new_dp);
 		// cur_coords.push(createVector(pos.x, pos.y, pos.z));
 
@@ -90,7 +91,7 @@ function submitOptions(event){
 	socket.emit('submitOptions', data);
 }
 
-function toCartesian(lat, lon){
+function toCartesian(lat, lon, price){
 	var alt = R;
 
 	var rlat = radians(lat);
@@ -107,13 +108,16 @@ function toCartesian(lat, lon){
 	var raxis = xa.cross(pos);
 	raxis = raxis.normalize();
 	var tmp = pos.copy();
-	tmp.mult(random(1,1.05));
+
+	var new_height = map(price, 0, 300, 1, 1.5);
+
+	tmp.mult(new_height);
 	// raxis.mult(h);
 	raxis.add(tmp);
 
 	// var data = { 'x': -cx, 'y': -cz, 'z' : cy, 'rx': raxis.x, 'ry': raxis.y, 'rz': raxis.z, 'ab': angleb};
 
-	var tmp = new DataPoint(pos.x, pos.y, pos.z,raxis.x,raxis.y,raxis.z,angleb);
+	var tmp = new DataPoint(pos.x, pos.y, pos.z,raxis.x,raxis.y,raxis.z,angleb,price);
 	return tmp
 }
 
@@ -129,7 +133,7 @@ function createOptions(verifyGhostSlider){
 }
 
 class DataPoint {
-	constructor(x,y,z,rx,ry,rz,ab){
+	constructor(x,y,z,rx,ry,rz,ab,price){
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -137,6 +141,7 @@ class DataPoint {
 		this.ry = ry;
 		this.rz = rz;
 		this.ab = ab;
+		this.price = price;
 	}
 
 	display(){
