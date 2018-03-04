@@ -4,7 +4,8 @@ var options = [];
 var cur_coords = [];
 var globe_img;
 var socket;
-var town_names;
+var town_names = [];
+var asc_names = [];
 
 // used for camera / lat,lng -> x,y,z
 var R = 600;
@@ -33,9 +34,16 @@ function setup(){
 
 function autocompletePopulate(d){
 	for (var i = 0; i < d.getRowCount(); i++){
+		var name = d.getString(i,0)+", "+d.getString(i,1);
 		// console.log(d.getString(i,0));
 		// places.push(d.get)
+		asc_names.push(name);
 	}
+
+	var input = document.getElementById("location_id");
+	var asc = new Awesomplete(input);
+
+	asc.list = asc_names;
 
 }
 
