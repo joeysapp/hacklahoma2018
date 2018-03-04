@@ -11,8 +11,23 @@ label {
 	font-size:0.8em;
 }
 
+input#income_id {
+	width:215px;
+}
+
+input#age_id{
+	width:215px;
+
+}
+
+#submit_i {
+	margin-top:0.5em;
+	padding-right:0.5em;
+}
+
 .cslider {
-	margin:0.5em;
+	margin-top:0.5em;
+	margin-bottom:0.5em;
 }
 
 #view {

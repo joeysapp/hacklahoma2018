@@ -216,10 +216,12 @@ function createOptions(){
 
 	var submit = createButton('go!');
 	submit.parent('#submit_i');
+	submit.style('width:48%');
 	submit.mousePressed(submitOptions);
 
 	var clear = createButton('clear');
 	clear.parent('#submit_i');
+	clear.style('margin-left:0.3em; width:49%');
 	clear.mousePressed(clearPoints);
 }
 
