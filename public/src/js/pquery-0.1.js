@@ -23,22 +23,12 @@ function setup(){
 
 	cam = new Dw.EasyCam(this._renderer, {distance:(R*2), center:[0,0,0]});
 
-	// globe_img = loadImage('src/data/earth.jpg', function(i){ g = i; });
-	globe_img = loadImage('src/data/1024x512.png', function(i){ g = i; });
+	globe_img = loadImage('src/data/earth.jpg', function(i){ g = i; });
+	// globe_img = loadImage('src/data/1024x512.png', function(i){ g = i; });
 }
 
 function draw(){
 	background(255);
-
-	// stroke(255, 0, 0);
-	// strokeWeight(8);
-	// line(0, 0, 0, R*2, 0, 0);
-
-	// stroke(0, 255, 0);
-	// line(0, 0, 0, 0, R*2, 0);
-
-	// stroke(0, 0, 255);
-	// line(0, 0, 0, 0, 0, R*2);
 
 	if (g){
 		push();
@@ -52,10 +42,8 @@ function draw(){
 	stroke(0, 255, 0);
 	fill(0, 255, 0);
 	cur_coords.forEach(function(e,idx){
-		// console.log(e.x);
 		line(e.x, e.y, e.z, e.x, e.y+20, e.z);
 		// point(e.x, e.y, e.z);
-
 	})
 
 }
@@ -81,14 +69,6 @@ function submitOptions(event){
 }
 
 function toCartesian(lat, lon){
-	// var theta = radians(lat) + Math.PI/2;
-	// var phi = radians(lon) + Math.PI;
-
-	// var r = 200;
-	// var x = r * sin(theta) * cos(phi);
-	// var y = -r * sin(theta) * sin(phi);
-	// var z = r * cos(theta);
-
 	var alt = R;
 
 	var rlat = radians(lat);
@@ -98,7 +78,14 @@ function toCartesian(lat, lon){
 	var cy = alt * cos(rlat) * sin(rlon);
 	var cz = alt * sin(rlat);
 
-	var data = { 'x': -cx, 'y': -cz, 'z' : cy };
+	var pos = createVector(-cx, -cz, cy);
+
+	var h = random(50);
+	var xa = createVector(1, 0, 0);
+	var angleb = xa.angleBetween(pos);
+	var raxis = xa.cross(pos);
+
+	var data = { 'x': -cx, 'y': -cz, 'z' : cy, 'rx': raxis.x, 'ry': raxis.y, 'rz': raxis.z, 'ab': angleb};
 
 	return data
 }
@@ -134,6 +121,8 @@ function createOptions(){
 	// Otherwise, single submit button:
 	submit.mousePressed(submitOptions);
 }
+
+
 
 function windowResized(){
 	globe.size(windowWidth, windowHeight);
