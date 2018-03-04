@@ -36,17 +36,30 @@ module.exports = {
 	console.log(cond);
 	var cond_married = -1;
 	if(cond['married_t']) cond_married = 1;
-	if(cond['married_f']) cond_married = 0;
+	if(cond['married_f']) {
+		if(cond['married_t'])
+			cond_married = -1;
+		else
+			cond_married = 0;
+	}
 	
 	var cond_sex = -1;
-	if(cond['gender_m']) cond_married = 1;
-	if(cond['gender_f']) cond_married = 0;
+	if(cond['gender_m']) cond_sex = 1;
+	if(cond['gender_f']) {
+		if(cond['gender_m'])
+			cond_sex = -1;
+		else
+			cond_sex = 0;
+	}
 	
 	var cond_income_max = cond['income_high']*2000;
 	var cond_income_min = cond['income_low']*2000;
 	
 	var cond_age_max = cond['age_high'];
 	var cond_age_min = cond['age_low'];
+	
+	var cond_pop_min = 0.0;
+	var cond_pop_max = 10.0;
 	
 	console.log(cond_married, cond_sex, cond_income_min, cond_income_max, cond_age_min, cond_age_max);
 	
@@ -62,13 +75,16 @@ module.exports = {
 		var sex_ = parseInt(allData[i]['sex']);
 		var income_ = parseFloat(allData[i]['income']);
 		var age_ = parseInt(allData[i]['age']);
-		if((cond_married == -1 ||  married_ == cond_married)
-			&& (cond_sex == -1 ||  sex_ == cond_sex)
+		var pop_ = parseFloat(allData[i]['log_pop']);
+		if((cond_married == -1 || married_ == cond_married)
+			&& (cond_sex == -1 || sex_ == cond_sex)
 			&& (cond_income_min <= income_)
 			&& (cond_income_max >= income_)
 			&& (cond_age_min <= age_)
-			&& (cond_age_max  >= age_)) {
-			var place = allData[i]['city'] + "," + allData[i]['state'];
+			&& (cond_age_max >= age_)
+			&& (cond_pop_min <= pop_)
+			&& (cond_pop_max >= pop_)) {
+			var place = allData[i]['big_city'] + "," + allData[i]['big_state'];
 			var paid = parseFloat(allData[i]['paid']);
 			var bsgp = [allData[i]['bronze']==allData[i]['paid'],
 						allData[i]['silver']==allData[i]['paid'],
