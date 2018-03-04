@@ -20,7 +20,6 @@ var returning_data = [];
 
 // 	 // DO SOMETHING WITH PLACENAMES W/ JQUERY
 //  });
- 
 csv
  .fromPath("public/src/data/data_short.csv", {headers:true})
  .on("data", function(row){
@@ -144,44 +143,64 @@ module.exports = {
 	this.returning_data = result;
 	return result;
 },
+	cityHistogram(cond) {
+		var location = cond.location;
+		var location_split = location.split(',');
 
-	cityHistogram(location, cond) {
-	var loc = location.trim();
-	var loc2 = loc.split(',');
-	var city = loc2[0].toLowerCase();
-	var state = loc2[1].toLowerCase();
-	city.charAt(0).toUpperCase();
-	state.charAt(0).toUpperCase();
+		var city = location_split[0].trim();
+		var state = location_split[1].trim();
+
 	
-	var result = [];
-	for(var i = 0; i < 30; ++i) {
-		result.push(0);
-	}
-	
-	if(!ready || !ready2) {
-		return result;
-	}
-	
-	var cond_married = cond['married'];
-	var cond_sex = cond['sex'];
-	var cond_income_min = cond['min_income'];
-	var cond_income_max = cond['max_income'];
-	var cond_age_min = cond['min_age'];
-	var cond_age_max = cond['max_age'];
-	var cond_pop_min = cond['min_pop'];
-	var cond_pop_max = cond['max_pop'];
-	
-	//console.log(cond_married,cond_sex,cond_income_min,cond_income_max);
-	var filtered = [];
-		for(var i = 0; i < allData.length; ++i) {
-		var married_ = parseInt(allData[i]['married']);
-		var sex_ = parseInt(allData[i]['sex']);
-		var income_ = parseFloat(allData[i]['income']);
-		var age_ = parseInt(allData[i]['age']);
-		var pop_ = parseFloat(allData[i]['log_pop']);
-		var city_ = allData[i]['city'];
-		var state_ = allData[i]['state'];
+		var result = [];
+		for(var i = 0; i < 30; ++i) {
+			result.push(0);
+		}
 		
+		if(!ready || !ready2) {
+			return result;
+		}
+		
+
+		var cond_married = -1;
+		if(cond['married_t']) cond_married = 1;
+		if(cond['married_f']) {
+			if(cond['married_t'])
+				cond_married = -1;
+			else
+				cond_married = 0;
+		}
+		
+		var cond_sex = -1;
+		if(cond['gender_m']) cond_sex = 1;
+		if(cond['gender_f']) {
+			if(cond['gender_m'])
+				cond_sex = -1;
+			else
+				cond_sex = 0;
+		}
+		
+		var cond_income_max = cond['income_high'] * 10000.0;
+		var cond_income_min = cond['income_low'] * 10000.0;
+		
+		var cond_age_max = cond['age_high'];
+		var cond_age_min = cond['age_low'];
+		
+		var cond_pop_min = 0.0;
+		var cond_pop_max = 10.0;
+		
+		
+		var filtered = [];
+		for(var i = 0; i < allData.length; ++i) {
+			//console.log("hello");
+			var married_ = parseInt(allData[i]['married']);
+			var sex_ = parseInt(allData[i]['sex']);
+			var income_ = parseFloat(allData[i]['income']);
+			var age_ = parseInt(allData[i]['age']);
+			var pop_ = parseFloat(allData[i]['log_pop']);
+			var city_ = allData[i]['city']; //allData[i]['city'];
+			var state_ = allData[i]['state'];
+
+
 		if((cond_married == -1 || married_ == cond_married)
 			&& (cond_sex == -1 || sex_ == cond_sex)
 			&& (cond_income_min <= income_)
@@ -192,17 +211,42 @@ module.exports = {
 			&& (cond_pop_max >= pop_)
 			&& (city == city_) 
 			&& (state == state_)) {
+
 				filtered.push(parseFloat(allData[i]['paid']));
 			}
-			
 		}
-	for(var i = 0; i < filtered.length; ++i) {
-		var ind_ = Math.round(filtered[i] / 10);
-		if (ind_ > 29) 
-			ind_ = 29;
-		result[ind_] += 1;
-	}
-	return result;
+
+		console.log("filtered["+filtered.length+"]: " + filtered);
+		var fil_min = filtered[0];
+		var fil_max = filtered[1];
+		for (var i = 0; i < filtered.length; i++){
+			var item = filtered[i];
+			if (item < fil_min){
+				fil_min = item;
+			} else if (item > fil_max){
+				fil_max = item;
+			}
+		}
+
+		var bins = 30;
+		var histogram = [];
+		for (var i = 0; i < bins; i++){
+			console.log("adding "+i);
+			histogram[i] = 0;
+		}
+		for (var i = 0; i < filtered.length; i++){
+			console.log("ADDING AGAIN, "+i);
+			histogram[Math.floor((filtered[i] - fil_min))] += 1;
+		}
+		return histogram;
+
+		// for(var i = 0; i < filtered.length; ++i) {
+		// 	var ind_ = Math.round(filtered[i] / 10);
+		// 	if (ind_ > 29) 
+		// 		ind_ = 29;
+		// 	result[ind_] += 1;
+		// }
+		// return result;
 }
 /*
 const NS_PER_SEC = 1e9;

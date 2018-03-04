@@ -99,6 +99,8 @@ function submitOptions(event){
 }
 
 function getCartesianCoords(data){
+	// maybe data = data.list?
+	
 	for (var key in data){
 		var lat = data[key].lat;
 		var lon = data[key].lng;

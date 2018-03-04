@@ -17,10 +17,12 @@ app.use(express.static('public'));
 io.on('connection', function(socket){
 	socket.on('submitOptions', function(data){
 		if (data.location == ''){
+			console.log("well this is odd!");
 			csv_query.JSONwithFilter(data);
 			socket.emit('updatePoints', csv_query.returning_data);
 		} else {
-			csv_query.cityHistogram(data);
+			console.log("wew emissions");
+			console.log(csv_query.cityHistogram(data));
 			socket.emit('createHistogram', csv_query.returning_data);
 		}
 	});
