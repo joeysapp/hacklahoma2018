@@ -163,8 +163,8 @@ function cartesianHelper(lat, lon){
 }
 
 function calcHeight(attr) {
-	//return map(attr.num, 0, 50, 1.025, 1.5);
-	return map(attr.price, 0, 750, 0.96, 1.5);
+	return map(attr.num, 0, 10000, 1.025, 1.5);
+	//return map(attr.price, 0, 750, 0.96, 1.5);
 }
 
 function updatePoint(index, attr) {
