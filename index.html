@@ -24,15 +24,40 @@ initial-scale=1">
 
 <body>
 	<div id="opt">
-		<div id="gender_i">Gender: </div>
-		<div id="employed_i">Employed: </div>
-		<div id="married_i">Married: </div>
+		<div id="gender_i">
+			<fieldset>
+			<legend>Gender: </legend>
+			<label for="gender_m">Male</label>
+			<input type="checkbox" name="gender_m" id="gender_m">
+			<label for="gender_f">Female</label>
+			<input type="checkbox" name="gender_f" id="gender_f">
+			</fieldset>
+		</div>
+		<div id="employed_i">
+			<fieldset>
+			<legend>Employment: </legend>
+			<label for="employed_t">True</label>
+			<input type="checkbox" name="employed_t" id="employed_t">
+			<label for="employed_f">False</label>
+			<input type="checkbox" name="employed_f" id="employed_f">
+			</fieldset>
+		</div>
+		<div id="married_i">
+		<fieldset>
+			<legend>Married: </legend>
+			<label for="married_t">True</label>
+			<input type="checkbox" name="married_t" id="married_t">
+			<label for="married_f">False</label>
+			<input type="checkbox" name="married_f" id="married_f">
+		</fieldset>
+
+		</div>
 		<div id="income_i">
 			Income:
-
 			<input id="income_id" type="range" multiple value="0,1000" />
 		</div>
-		<div id="age_i">Age: 
+		<div id="age_i">
+			Age: 
 			<input id="age_id" type="range" multiple value="18,100" />
 		</div>
 		<div id="location_i">Location: </div>

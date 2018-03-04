@@ -13,8 +13,6 @@ app.use(express.static('public'));
 
 io.on('connection', function(socket){
 	// socket.emit('Connected', {msg: "You're connected!"});
-
-
 	socket.on('submitOptions', function(data){
 		console.log(data);
 		// Send the data to Bruce's SQL stuff!

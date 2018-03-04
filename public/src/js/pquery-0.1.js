@@ -1,6 +1,6 @@
 var globe, cam;
-var options = [];
 var cur_json;
+var options = [];
 var cur_coords = [];
 var g;
 var socket;
@@ -67,16 +67,25 @@ function getCartesianCoords(data){
 
 // Used when the go! button (#submit_i) is clicked
 function submitOptions(event){
-	console.log()
 	var data = {
-		'gender': options[0].checked(),
-		'employed': options[1].checked(),
-		'married': options[2].checked(),
+		'gender_m': $('#gender_m').prop("checked"),
+		'gender_f': $('#gender_f').prop("checked"),
+
+		'employed_t': $('#employed_t').prop("checked"),
+		'employed_f': $('#employed_f').prop("checked"),
+
+		'married_t': $('#married_t').prop("checked"),
+		'married_f': $('#married_f').prop("checked"),
+
 		'income_high': $('#income_id.multirange.original')[0].valueHigh,
 		'income_low': $('#income_id.multirange.original')[0].valueLow,
+		
 		'age_high': $('#age_id.multirange.original')[0].valueHigh,
 		'age_low': $('#age_id.multirange.original')[0].valueLow,
-		'location': options[5].value()
+
+		// We could do some verification on the node side to check
+		// for stuff
+		'income': options[0].value()
 	}
 	socket.emit('submitOptions', data);
 }
@@ -108,47 +117,15 @@ function toCartesian(lat, lon){
 	return tmp
 }
 
-function createOptions(verifyGhostSlider){
-	var gender = createCheckbox(false);
-	gender.parent('#gender_i');
-
-	var employed = createCheckbox(false);
-	employed.parent('#employed_i');
-
-	var married = createCheckbox(false);
-	married.parent('#married_i');
-
-	var multirange_sliders = selectAll('.multirange ghost');
-	var income = multirange_sliders[0];
-	income.id('income_id');
-
-	var age = multirange_sliders[1];
-	age.id('age_id');
-
+function createOptions(verifyGhostSlider){ 
 	var location = createInput();
 	location.parent('#location_i');
+	options.push(location);
 
 	var submit = createButton('go!');
 	submit.parent('#submit_i');
 
-	options.push(gender, employed, married, location);
-	
-	// Rework this if we want the below feature, otherwise whatever
-	options.forEach(function(e, idx){
-		e.style('display:inline-block');
-
-		// This would be for on-the-fly updating
-		// i.e. when a single option is changed, 
-		// we call our node server and hope for a response
-		// e.changed(optionChange);
-	});
-	options.splice(3, 0, income);
-	options.splice(4, 0, age);
-	// Otherwise, single submit button:
 	submit.mousePressed(submitOptions);
-	// verifyGhostSlider();
-
-
 }
 
 class DataPoint {
