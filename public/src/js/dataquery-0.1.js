@@ -33,14 +33,24 @@ module.exports = {
 	//console.log(cond);
 	var cond_married = -1;
 	if(cond['married_t']) cond_married = 1;
-	if(cond['married_f']) cond_married = 0;
+	if(cond['married_f']) {
+		if(cond['married_t'])
+			cond_married = -1;
+		else
+			cond_married = 0;
+	}
 	
 	var cond_sex = -1;
-	if(cond['gender_m']) cond_married = 1;
-	if(cond['gender_f']) cond_married = 0;
+	if(cond['gender_m']) cond_sex = 1;
+	if(cond['gender_f']) {
+		if(cond['gender_m'])
+			cond_sex = -1;
+		else
+			cond_sex = 0;
+	}
 	
-	var cond_income_max = cond['income_high'];
-	var cond_income_min = cond['income_low'];
+	var cond_income_max = cond['income_high'] * 10000.0;
+	var cond_income_min = cond['income_low'] * 10000.0;
 	
 	var cond_age_max = cond['age_high'];
 	var cond_age_min = cond['age_low'];
