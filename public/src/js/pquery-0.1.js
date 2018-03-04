@@ -7,6 +7,9 @@ var socket;
 var town_names = [];
 var asc_names = [];
 
+var town_id = {};
+var id_fresh = {};
+
 // used for camera / lat,lng -> x,y,z
 var R = 600;
 
@@ -98,15 +101,38 @@ function submitOptions(event){
 
 }
 
+function elminateCoords() {
+	for(var i = 0; i < cur_coords.length; ++i) {
+		if(id_fresh[i] === undefined) {
+			eliminate(i);
+		}
+	}
+	id_fresh = {};
+}
+
+function eliminate(index) {
+	var new_raxis = cur_coords[index].r.copy().normalize();
+	new_raxis.mult(0.01);
+	cur_coords[index].r = new_raxis;
+}
+
 function getCartesianCoords(data){
 	for (var key in data){
 		var lat = data[key].lat;
 		var lon = data[key].lng;
-		var price = data[key].avg_cost;
-		var num = data[key].num;
-		var new_dp = toCartesian(lat,lon,price,num);
-		cur_coords.push(new_dp);
+		var attr = { price : data[key].avg_cost, num : data[key].num };
+		var new_dp = toCartesian(lat,lon,attr);
+		
+		var place = data[key].city + "," + data[key].state;
+		if(town_id[place] === undefined) {
+			town_id[place] = cur_coords.length;
+			cur_coords.push(new_dp);
+		} else {
+			updatePoint(town_id[place],attr);
+		}
+		id_fresh[town_id[place]] = 1;
 	}
+	elminateCoords();
 }
 
 function cartesianHelper(lat, lon){
@@ -122,8 +148,24 @@ function cartesianHelper(lat, lon){
 	return createVector(-cx, -cz, cy);
 }
 
-function toCartesian(lat, lon, price, num){
-	var alt = R;
+function calcHeight(attr) {
+	//return map(attr.num, 0, 50, 1.025, 1.4);
+	return map(attr.price, 0, 700, 0.9, 1.4);
+}
+
+function updatePoint(index, attr) {
+	var new_height = calcHeight(attr);
+	
+	var new_raxis = cur_coords[index].r.copy().normalize();
+	var tmp = cur_coords[index].pos.copy();
+	tmp.mult(new_height);
+	new_raxis.add(tmp);
+	
+	cur_coords[index].r = new_raxis;
+}
+
+function toCartesian(lat, lon, attr){
+	var alt = R-10;
 
 	var rlat = radians(lat);
 	var rlon = radians(lon);
@@ -141,16 +183,14 @@ function toCartesian(lat, lon, price, num){
 	var tmp = pos.copy();
 
 	//var new_height = map(price, 0, 300, 0.9, 1.4);
-	var new_height = map(num, 0, 50, 1.0, 1.2);
-
+	var new_height = calcHeight(attr);
 	tmp.mult(new_height);
 	// raxis.mult(h);
 	raxis.add(tmp);
-
 	// var data = { 'x': -cx, 'y': -cz, 'z' : cy, 'rx': raxis.x, 'ry': raxis.y, 'rz': raxis.z, 'ab': angleb};
 
-	var tmp = new DataPoint(pos.x, pos.y, pos.z,raxis.x,raxis.y,raxis.z,angleb,price);
-	return tmp
+	var tmp = new DataPoint(pos,raxis,angleb);
+	return tmp;
 }
 
 function createOptions(){ 
@@ -170,22 +210,22 @@ function createOptions(){
 
 function clearPoints(){
 	cur_coords = [];
+	town_id = {};
+	id_fresh = {};
 }
 
 class DataPoint {
-	constructor(x,y,z,rx,ry,rz,ab,price){
-		this.x = x;
-		this.y = y;
-		this.z = z;
-		this.rx = rx;
-		this.ry = ry;
-		this.rz = rz;
+	constructor(pos,r,ab) {
+		this.online = true;
+		this.pos = pos;
+		this.r = r;
 		this.ab = ab;
-		this.price = price;
 	}
 
 	display(){
-		line(this.x,this.y,this.z,this.rx,this.ry,this.rz);
+		if(this.online) {
+			line(this.pos.x,this.pos.y,this.pos.z,this.r.x,this.r.y,this.r.z);
+		}
 	}
 }
 
