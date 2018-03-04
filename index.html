@@ -6,8 +6,12 @@ initial-scale=1">
 
 <title>Hacklahoma 2018</title>
 
-<link rel="stylesheet" href="vendors/js/jquery.mobile-git.min.css">
-<link rel="stylesheet" href="src/css/multirange.css">
+
+<link rel="stylesheet" type="text/css" href="vendors/css/jquery-ui.min.css">
+<link rel="stylesheet" type="text/css" href="vendors/css/jquery-ui.structure.min.css">
+<link rel="stylesheet" type="text/css" href="vendors/css/jquery-ui.theme.min.css">
+<link rel="stylesheet" type="text/css" href="vendors/css/jquery.mobile-git.min.css">
+<link rel="stylesheet" type="text/css" href="src/css/multirange.css">
 <script src="vendors/js/jquery-git.min.js"></script>
 <script src="vendors/js/jquery-ui.min.js"></script>
 <script src="vendors/js/multirange.js"></script>
@@ -52,11 +56,11 @@ initial-scale=1">
 		</fieldset>
 
 		</div>
-		<div id="income_i">
+		<div id="income_i" class="cslider">
 			Income:
 			<input id="income_id" type="range" multiple value="0,1000" />
 		</div>
-		<div id="age_i">
+		<div id="age_i" class="cslider">
 			Age: 
 			<input id="age_id" type="range" multiple value="18,100" />
 		</div>
@@ -65,3 +69,9 @@ initial-scale=1">
 	</div>
 	<div id="view"></div>
 </body>
+
+<script>
+$( "input[type='checkbox']" ).checkboxradio({
+	icon: false
+});
+</script>

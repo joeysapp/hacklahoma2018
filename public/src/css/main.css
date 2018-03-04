@@ -3,6 +3,18 @@ body {
 	font-size:1em;
 }
 
+fieldset {
+	padding:0.4em;
+}
+
+label {
+	font-size:0.8em;
+}
+
+.cslider {
+	margin:0.5em;
+}
+
 #view {
 	width:100vw;
 	height:100vh;	
