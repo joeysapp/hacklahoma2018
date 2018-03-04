@@ -1,6 +1,5 @@
 var globe, cam;
 var options = [];
-var col;
 var cur_json;
 var cur_coords = [];
 var g;
@@ -24,24 +23,21 @@ function setup(){
 }
 
 function draw(){
-	background(col);
-	fill(255);
+	background(255);
 
-	stroke(255, 0, 0);
-	strokeWeight(8);
-	line(0, 0, 0, R*2, 0, 0);
+	// stroke(255, 0, 0);
+	// strokeWeight(8);
+	// line(0, 0, 0, R*2, 0, 0);
 
-	stroke(0, 255, 0);
-	line(0, 0, 0, 0, R*2, 0);
+	// stroke(0, 255, 0);
+	// line(0, 0, 0, 0, R*2, 0);
 
-	stroke(0, 0, 255);
-	line(0, 0, 0, 0, 0, R*2);
+	// stroke(0, 0, 255);
+	// line(0, 0, 0, 0, 0, R*2);
 
 	if (g){
-		push();
 		texture(g);
 		sphere(R);
-		pop();
 	}
 }
 
@@ -54,6 +50,7 @@ function getCartesianCoords(data){
 	}
 }
 
+// Determining what to do when a button is clicked
 function optionChange(e){
 	// so e.path[0] is just input.. e.path[1] is the div
 	// console.log(e.path[1]);
@@ -91,6 +88,9 @@ function createOptions(){
 
 	var location = createInput();
 	location.parent('#location_i');
+
+	var submit = createButton('go!');
+	submit.parent('#submit_i');
 
 	options.push(gender, income, employed, married, location);
 	options.forEach(function(e, idx){
