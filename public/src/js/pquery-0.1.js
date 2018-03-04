@@ -39,18 +39,7 @@ function setup(){
 	globe_img = loadImage('src/data/earth.jpg', function(i){ globe_img = i; });
 }
 
-function createHistogramDiv(d){
-	var name = "h-"+String(histograms.length);
-	var tmp = createDiv(200, 500);
-	tmp.parent('h_holder');
-	tmp.style('width:10vw;height:10vh');
-	tmp.position(windowWidth/2, windowHeight/2);
-	// tmp.class("histogram");
-	// histograms.push(tmp);
 
-
-
-}
 
 function autocompletePopulate(d){
 	for (var i = 0; i < d.getRowCount(); i++){
@@ -271,5 +260,35 @@ function windowResized(){
 // 	console.log(us_cities_objs.length);
 // });
 
+// function createHistogramDiv(data){
+// 	var name = "h-"+String(histograms.length);
+// 	var tmp = createDiv(200, 500);
+// 	tmp.parent('h_holder');
+// 	tmp.class('histogram');
+// 	tmp.position(windowWidth/2, windowHeight/2);
 
+
+// 	var bucket_size = 10;
+// 	var min = data[0];
+// 	var max = data[1];
+// 	data.forEach(function(item,idx){
+// 		if (item > max){
+// 			max = item;
+// 		} else if (item < min){
+// 			min = item;
+// 		}
+// 	})
+// 	for (var i = 0; i < windowWidth; i += 2){
+// 		var which = floor(map(i, 0, tmp.width, 0, data.length));
+// 		var y = floor(map(data[which], 0, max, tmp.height, 0));
+// 		stroke(0);
+// 		strokeWeight(8);
+// 		line(i, this.height, i, y);
+// 	}
+
+
+// 	// tmp.class("histogram");
+// 	// histograms.push(tmp);
+
+// }
 
