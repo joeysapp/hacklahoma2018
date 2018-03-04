@@ -2,9 +2,9 @@ var csv = require("fast-csv");
 
 var allData = [];
 var ready = false;
-var ready2 = false;
 var city_LL = {};
 
+var ready2 = false;
 var placenames = [];
 var returning_data = [];
 

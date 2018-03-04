@@ -88,8 +88,11 @@ function submitOptions(event){
 
 		// We could do some verification on the node side to check
 		// for stuff
+		'location': $('#location_id').val()
 		// 'income': options[0].value()
 	}
+	console.log(data);
+	$('#location_id').val('');
 	socket.emit('submitOptions', data);
 	// cur_coords = [];
 
@@ -137,7 +140,6 @@ function toCartesian(lat, lon, price, num){
 	raxis = raxis.normalize();
 	var tmp = pos.copy();
 
-	console.log(num);
 	//var new_height = map(price, 0, 300, 0.9, 1.4);
 	var new_height = map(num, 0, 50, 1.0, 1.2);
 
