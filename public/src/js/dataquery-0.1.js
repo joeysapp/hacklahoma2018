@@ -5,6 +5,8 @@ var ready = false;
 var ready2 = false;
 var city_LL = {};
 
+var returning_data = null;
+
 csv
  .fromPath("public/src/data/data_short.csv", {headers:true})
  .on("data", function(row){
@@ -28,9 +30,10 @@ csv
  });
  
 module.exports = {
+	returning_data: "0",
 // taking conditions -> returns huge-### JSON of data stuff
-	JSONwithFilter: function(cond) {
-	//console.log(cond);
+	JSONwithFilter: function(cond, foo) {
+	console.log(cond);
 	var cond_married = -1;
 	if(cond['married_t']) cond_married = 1;
 	if(cond['married_f']) cond_married = 0;
@@ -39,8 +42,8 @@ module.exports = {
 	if(cond['gender_m']) cond_married = 1;
 	if(cond['gender_f']) cond_married = 0;
 	
-	var cond_income_max = cond['income_high'];
-	var cond_income_min = cond['income_low'];
+	var cond_income_max = cond['income_high']*2000;
+	var cond_income_min = cond['income_low']*2000;
 	
 	var cond_age_max = cond['age_high'];
 	var cond_age_min = cond['age_low'];
@@ -110,6 +113,8 @@ module.exports = {
 		}
 	}
 	//console.log(result.length);
+	this.returning_data = result;
+	console.log(this.returning_data.length);
 	return result;
 },
 

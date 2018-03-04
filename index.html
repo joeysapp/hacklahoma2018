@@ -6,15 +6,17 @@ initial-scale=1">
 
 <title>Hacklahoma 2018</title>
 
-
 <link rel="stylesheet" type="text/css" href="vendors/css/jquery-ui.min.css">
 <link rel="stylesheet" type="text/css" href="vendors/css/jquery-ui.structure.min.css">
 <link rel="stylesheet" type="text/css" href="vendors/css/jquery-ui.theme.min.css">
 <link rel="stylesheet" type="text/css" href="vendors/css/jquery.mobile-git.min.css">
-<link rel="stylesheet" type="text/css" href="src/css/multirange.css">
+<link rel="stylesheet" type="text/css" href="vendors/css/multirange.css">
+<link rel="stylesheet" type="text/css" href="vendors/css/awesomplete.css">
+
 <script src="vendors/js/jquery-git.min.js"></script>
 <script src="vendors/js/jquery-ui.min.js"></script>
 <script src="vendors/js/multirange.js"></script>
+<script src="vendors/js/awesomplete.min.js"></script>
 <script src="vendors/p5/p5.min.js"></script>
 <script src="vendors/p5/p5.dom.min.js"></script>
 <script src="vendors/p5/p5.easycam.min.js"></script>
@@ -22,6 +24,7 @@ initial-scale=1">
 <script src="vendors/socket.io/socket.io.slim.js"></script>
 
 <!-- Personal stuff -->
+<script src="src/js/cityhelper-0.1.js"></script>
 <script src="src/js/pquery-0.1.js"></script>
 <link rel="stylesheet" href="src/css/main.css">
 </head>
@@ -58,7 +61,7 @@ initial-scale=1">
 		</div>
 		<div id="income_i" class="cslider">
 			Income:
-			<input id="income_id" type="range" multiple value="0,1000" />
+			<input id="income_id" type="range" multiple value="0,100" />
 		</div>
 		<div id="age_i" class="cslider">
 			Age: 
@@ -71,7 +74,5 @@ initial-scale=1">
 </body>
 
 <script>
-$( "input[type='checkbox']" ).checkboxradio({
-	icon: false
-});
+	$("input[type='checkbox']").checkboxradio({ icon: false });
 </script>

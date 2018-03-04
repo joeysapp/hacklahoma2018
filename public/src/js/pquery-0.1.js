@@ -2,42 +2,66 @@ var globe, cam;
 var cur_json;
 var options = [];
 var cur_coords = [];
-var g;
+var globe_img;
 var socket;
+
+// Testing out geojson city data
+var us_cities;
+var us_cities_objs = [];
 
 // used for camera / lat,lng -> x,y,z
 var R = 600;
 
 function setup(){
 	socket = io.connect(window.location.origin);
-	// socket.on('message', function(data){
-	// 	console.log(data.msg);
-	// });
+	socket.on('updatePoints', function(data){
+		getCartesianCoords(data);
+	});
 
+	// Main p5 canvas and population options div
 	globe = createCanvas(windowWidth, windowHeight, WEBGL);
 	globe.parent('view');
 	globe.style("position: absolute; top: 0px;");
+	createOptions(makeAutocomplete);
 
-	createOptions(foo);
-	cur_data = loadJSON('src/data/dummy-data.json', getCartesianCoords);
+	// PeasyCam port
+	cam = new Dw.EasyCam(this._renderer, {distance:(R*2), center:[0,0,0], rotation:[1,0,0,0]});
 
-	cam = new Dw.EasyCam(this._renderer, {distance:(R*2), center:[0,0,0]});
+	// Testing out geojson city data!
+	// us_cities = loadJSON('src/data/all_cities.json', function(data){
+	// 	var i = 0;
+	// 	data["features"].some(function(element,idx){
+	// 		i += 1;
+	// 		if (i > 5000){ return; }
+	// 		var coords = [];
+	// 		var name = element.properties.NAME;
 
-	// globe_img = loadImage('src/data/earth.jpg', function(i){ g = i; });
-	globe_img = loadImage('src/data/1024x512.png', function(i){ g = i; });
-}
+	// 		element.geometry.coordinates[0].forEach(function(coord){
+	// 			coords.push(cartesianHelper(coord[1], coord[0]));
+	// 		})
 
-function foo(){
-	// console.log(selectAll('income_id'));
+	// 		i += 1;
+	// 		// console.log(element);
+			
+	// 		us_cities_objs.push(new City(coords, name));
+	// 	});
+	// 	console.log(us_cities_objs.length);
+	// });
+
+	// Globe image last
+	// globe_img = loadImage('src/data/1024x512.jpg', function(i){ globe_img = i; });
+	globe_img = loadImage('src/data/earth.jpg', function(i){ globe_img = i; });
 }
 
 function draw(){
 	background(255);
+	rotateY(PI + PI/16);
+	rotateX(PI/5);
 
-	if (g){
+	if (globe_img){
 		push();
 		rotateY(PI/2);
-		texture(g);
+		texture(globe_img);
 		sphere(R);
 		pop();
 	}
@@ -47,23 +71,12 @@ function draw(){
 	fill(0, 255, 0);
 	cur_coords.forEach(function(e,idx){
 		e.display();
-		// line(e.x, e.y, e.z, e.x, e.y+20, e.z);
-		// point(e.x, e.y, e.z);
 	})
 
-}
+	us_cities_objs.forEach(function(e,idx){
+		e.display();
+	});
 
-// This may be different depending on how we have our json serialized
-function getCartesianCoords(data){
-	for (var key in Object.keys(data[0].list)){
-		var lat = data[0].list[key].lat;
-		var lon = data[0].list[key].lng;
-		var price = data[0].list[key].avg_cost;
-		var new_dp = toCartesian(lat,lon,price);
-		cur_coords.push(new_dp);
-		// cur_coords.push(createVector(pos.x, pos.y, pos.z));
-
-	}
 }
 
 // Used when the go! button (#submit_i) is clicked
@@ -89,6 +102,30 @@ function submitOptions(event){
 		'income': options[0].value()
 	}
 	socket.emit('submitOptions', data);
+
+}
+
+function getCartesianCoords(data){
+	for (var key in data){
+		var lat = data[key].lat;
+		var lon = data[key].lng;
+		var price = data[key].avg_cost;
+		var new_dp = toCartesian(lat,lon,price);
+		cur_coords.push(new_dp);
+	}
+}
+
+function cartesianHelper(lat, lon){
+	var alt = R;
+
+	var rlat = radians(lat);
+	var rlon = radians(lon);
+
+	var cx = alt * cos(rlat) * cos(rlon);
+	var cy = alt * cos(rlat) * sin(rlon);
+	var cz = alt * sin(rlat);
+
+	return createVector(-cx, -cz, cy);
 }
 
 function toCartesian(lat, lon, price){
@@ -121,15 +158,24 @@ function toCartesian(lat, lon, price){
 	return tmp
 }
 
-function createOptions(verifyGhostSlider){ 
+function createOptions(){ 
 	var location = createInput();
+	location.id('#location');
 	location.parent('#location_i');
 	options.push(location);
 
 	var submit = createButton('go!');
 	submit.parent('#submit_i');
-
 	submit.mousePressed(submitOptions);
+
+
+	var clear = createButton('clear');
+	clear.parent('#submit_i');
+	clear.mousePressed(clearPoints);
+}
+
+function clearPoints(){
+	cur_coords = [];
 }
 
 class DataPoint {
@@ -149,6 +195,17 @@ class DataPoint {
 	}
 }
 
+function makeAutocomplete(){
+	var input = document.getElementById("location");
+
+	// Show label but insert value into the input:
+
+
+}
+
 function windowResized(){
 	globe.size(windowWidth, windowHeight);
 }
+
+
+
