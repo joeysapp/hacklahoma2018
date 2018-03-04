@@ -20,7 +20,9 @@ io.on('connection', function(socket){
 			csv_query.JSONwithFilter(data);
 			socket.emit('updatePoints', csv_query.returning_data);
 		} else {
-			csv_query.cityHistogram(data);
+			console.log(csv_query.cityHistogram(data));
+
+			// This goes in pquery if we have time
 			socket.emit('createHistogram', csv_query.returning_data);
 		}
 	});
