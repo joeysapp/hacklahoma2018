@@ -42,7 +42,8 @@ function draw(){
 	stroke(0, 255, 0);
 	fill(0, 255, 0);
 	cur_coords.forEach(function(e,idx){
-		line(e.x, e.y, e.z, e.x, e.y+20, e.z);
+		e.display();
+		// line(e.x, e.y, e.z, e.x, e.y+20, e.z);
 		// point(e.x, e.y, e.z);
 	})
 
@@ -51,8 +52,12 @@ function draw(){
 // This may be different depending on how we have our json serialized
 function getCartesianCoords(data){
 	for (var key in Object.keys(data[0].list)){
-		var pos = toCartesian(data[0].list[key].lat, data[0].list[key].lng);
-		cur_coords.push(createVector(pos.x, pos.y, pos.z));
+		var lat = data[0].list[key].lat;
+		var lon = data[0].list[key].lng;
+		var new_dp = toCartesian(lat,lon);
+		cur_coords.push(new_dp);
+		// cur_coords.push(createVector(pos.x, pos.y, pos.z));
+
 	}
 }
 
@@ -80,14 +85,19 @@ function toCartesian(lat, lon){
 
 	var pos = createVector(-cx, -cz, cy);
 
-	var h = random(50);
 	var xa = createVector(1, 0, 0);
 	var angleb = xa.angleBetween(pos);
 	var raxis = xa.cross(pos);
+	raxis = raxis.normalize();
+	var tmp = pos.copy();
+	tmp.mult(random(1,1.05));
+	// raxis.mult(h);
+	raxis.add(tmp);
 
-	var data = { 'x': -cx, 'y': -cz, 'z' : cy, 'rx': raxis.x, 'ry': raxis.y, 'rz': raxis.z, 'ab': angleb};
+	// var data = { 'x': -cx, 'y': -cz, 'z' : cy, 'rx': raxis.x, 'ry': raxis.y, 'rz': raxis.z, 'ab': angleb};
 
-	return data
+	var tmp = new DataPoint(pos.x, pos.y, pos.z,raxis.x,raxis.y,raxis.z,angleb);
+	return tmp
 }
 
 function createOptions(){
@@ -122,7 +132,21 @@ function createOptions(){
 	submit.mousePressed(submitOptions);
 }
 
+class DataPoint {
+	constructor(x,y,z,rx,ry,rz,ab){
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		this.rx = rx;
+		this.ry = ry;
+		this.rz = rz;
+		this.ab = ab;
+	}
 
+	display(){
+		line(this.x,this.y,this.z,this.rx,this.ry,this.rz);
+	}
+}
 
 function windowResized(){
 	globe.size(windowWidth, windowHeight);
