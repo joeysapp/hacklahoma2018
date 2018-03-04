@@ -8,7 +8,6 @@ var ready2 = false;
 var placenames = [];
 var returning_data = {};
 
-
 // csv
 //  .fromPath("public/src/data/all_places.csv")
 //  .on("data", function(row){
@@ -246,7 +245,7 @@ module.exports = {
 		for (var i = 0; i < filtered.length; i++){
 			histogram[Math.floor((filtered[i] - fil_min)/filtered.length)] += 1;
 		}
-
+		this.returning_data	= { 'max_count' : 0, 'max_price' : 0, 'list' : result };
 		return histogram;
 }
 /*

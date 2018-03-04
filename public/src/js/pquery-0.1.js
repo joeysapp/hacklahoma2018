@@ -43,6 +43,8 @@ function createHistogramDiv(d){
 	var name = "h-"+String(histograms.length);
 	var tmp = createDiv(200, 500);
 	tmp.parent('h_holder');
+	tmp.style('width:10vw;height:10vh');
+	tmp.position(windowWidth/2, windowHeight/2);
 	// tmp.class("histogram");
 	// histograms.push(tmp);
 
