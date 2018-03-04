@@ -8,7 +8,6 @@ var ready2 = false;
 var placenames = [];
 var returning_data = {};
 
-
 // csv
 //  .fromPath("public/src/data/all_places.csv")
 //  .on("data", function(row){
@@ -228,26 +227,26 @@ module.exports = {
 			}
 		}
 
-		var fil_min = filtered[0];
-		var fil_max = filtered[1];
-		for (var i = 0; i < filtered.length; i++){
-			var item = filtered[i];
-			if (item < fil_min){
-				fil_min = item;
-			} else if (item > fil_max){
-				fil_max = item;
-			}
-		}
-		var bins = Math.ceil((fil_max-fil_min+1)/filtered.length);
-		var histogram = [];
-		for (var i = 0; i < bins; i++){
-			histogram[i] = 0;
-		}
-		for (var i = 0; i < filtered.length; i++){
-			histogram[Math.floor((filtered[i] - fil_min)/filtered.length)] += 1;
-		}
-
-		return histogram;
+		// var fil_min = filtered[0];
+		// var fil_max = filtered[1];
+		// for (var i = 0; i < filtered.length; i++){
+		// 	var item = filtered[i];
+		// 	if (item < fil_min){
+		// 		fil_min = item;
+		// 	} else if (item > fil_max){
+		// 		fil_max = item;
+		// 	}
+		// }
+		// var bins = Math.ceil((fil_max-fil_min+1)/filtered.length);
+		// var histogram = [];
+		// for (var i = 0; i < bins; i++){
+		// 	histogram[i] = 0;
+		// }
+		// for (var i = 0; i < filtered.length; i++){
+		// 	histogram[Math.floor((filtered[i] - fil_min)/filtered.length)] += 1;
+		// }
+		this.returning_data	= { 'max_count' : 0, 'max_price' : 0, 'list' : filtered };
+		return filtered;
 }
 /*
 const NS_PER_SEC = 1e9;

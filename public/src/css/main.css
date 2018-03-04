@@ -31,16 +31,3 @@ label {
 	height:auto;
 	width:auto;
 }
-
-#h_holder {
-	position: absolute;
-	z-index:4;
-	left:30vw;
-	top:50vh;
-}
-
-.histogram {
-	position: absolute;
-	z-index:4;
-
-}

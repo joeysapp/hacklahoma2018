@@ -20,7 +20,7 @@ io.on('connection', function(socket){
 			csv_query.JSONwithFilter(data);
 			socket.emit('updatePoints', csv_query.returning_data['list']);
 		} else {
-			console.log(csv_query.cityHistogram(data));
+			csv_query.cityHistogram(data);
 
 			// This goes in pquery if we have time
 			socket.emit('createHistogram', csv_query.returning_data);
