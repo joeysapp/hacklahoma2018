@@ -21,8 +21,8 @@ var returning_data = {};
 //  });
  
 csv
- // .fromPath("public/src/data/data_med.csv", {headers:true})
- .fromPath("public/src/data/data_short.csv", {headers:true})
+ .fromPath("public/src/data/data_med.csv", {headers:true})
+ // .fromPath("public/src/data/data_short.csv", {headers:true})
  .on("data", function(row){
 	 allData.push(row);
  })
