@@ -23,7 +23,7 @@ io.on('connection', function(socket){
 			csv_query.cityHistogram(data);
 
 			// This goes in pquery if we have time
-			socket.emit('createHistogram', csv_query.returning_data['list']);
+			socket.emit('createHistogram', csv_query.returning_data);
 		}
 	});
 	// socket.on('listPopulation', function(data){
