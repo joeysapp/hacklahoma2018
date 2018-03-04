@@ -5,6 +5,18 @@ var ready = false;
 var ready2 = false;
 var city_LL = {};
 
+var placenames = [];
+
+csv
+ .fromPath("public/src/data/all_places.csv", {headers:true})
+ .on("data", function(row){
+	 placenames.push(row[0] + ", " + row[1]);
+ })
+ .on("end", function(){
+	 console.log("loaded placenames")
+	 // DO SOMETHING WITH PLACENAMES W/ JQUERY
+ });
+ 
 csv
  .fromPath("public/src/data/data_short.csv", {headers:true})
  .on("data", function(row){
@@ -129,18 +141,64 @@ module.exports = {
 	return result;
 },
 
-	countCity: function(city, classifier) {
-		var result = [];
-		if(!ready) {
-		} else {
-			for(var i = 0; i < allData.length; ++i) {
-				if(allData[i]['city'] == city) {
-					result.push(parseFloat(allData[i]['paid']));
-				}
+	cityHistogram(location, cond) {
+	var loc = location.trim();
+	var loc2 = loc.split(',');
+	var city = loc2[0].toLowerCase();
+	var state = loc2[1].toLowerCase();
+	city.charAt(0).toUpperCase();
+	state.charAt(0).toUpperCase();
+	
+	var result = [];
+	for(var i = 0; i < 30; ++i) {
+		result.push(0);
+	}
+	
+	if(!ready || !ready2) {
+		return result;
+	}
+	
+	var cond_married = cond['married'];
+	var cond_sex = cond['sex'];
+	var cond_income_min = cond['min_income'];
+	var cond_income_max = cond['max_income'];
+	var cond_age_min = cond['min_age'];
+	var cond_age_max = cond['max_age'];
+	var cond_pop_min = cond['min_pop'];
+	var cond_pop_max = cond['max_pop'];
+	
+	//console.log(cond_married,cond_sex,cond_income_min,cond_income_max);
+	var filtered = [];
+		for(var i = 0; i < allData.length; ++i) {
+		var married_ = parseInt(allData[i]['married']);
+		var sex_ = parseInt(allData[i]['sex']);
+		var income_ = parseFloat(allData[i]['income']);
+		var age_ = parseInt(allData[i]['age']);
+		var pop_ = parseFloat(allData[i]['log_pop']);
+		var city_ = allData[i]['city'];
+		var state_ = allData[i]['state'];
+		
+		if((cond_married == -1 || married_ == cond_married)
+			&& (cond_sex == -1 || sex_ == cond_sex)
+			&& (cond_income_min <= income_)
+			&& (cond_income_max >= income_)
+			&& (cond_age_min <= age_)
+			&& (cond_age_max >= age_)
+			&& (cond_pop_min <= pop_)
+			&& (cond_pop_max >= pop_)
+			&& (city == city_) 
+			&& (state == state_)) {
+				filtered.push(parseFloat(allData[i]['paid']));
 			}
+			
 		}
-		return result.sort(function(a,b) { return a - b;});
-	 }
+	for(var i = 0; i < filtered.length; ++i) {
+		var ind_ = Math.round(filtered[i] / 10);
+		if (ind_ > 29) 
+			ind_ = 29;
+		result[ind_] += 1;
+	}
+	return result;
 }
 /*
 const NS_PER_SEC = 1e9;
