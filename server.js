@@ -9,7 +9,7 @@ var io = require('socket.io')(server);
 var path = require('path');
 var csv = require('fast-csv');
 
-var csv_query = require('./csv_query');
+var csv_query = require('./public/src/js/dataquery-0.1');
 
 server.listen(process.env.PORT || 8000);
 app.use(express.static('public'));
@@ -18,7 +18,7 @@ io.on('connection', function(socket){
 	// socket.emit('Connected', {msg: "You're connected!"});
 	socket.on('submitOptions', function(data){
 		console.log(data);
-		csv_query.JSONwithFilter(data);
+		csv_query.JSONwithFilter();
 		// Send the data to Bruce's SQL stuff!
 
 		// I think this is only needed 

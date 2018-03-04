@@ -6,7 +6,7 @@ var ready2 = false;
 var city_LL = {};
 
 csv
- .fromPath("data_short.csv", {headers:true})
+ .fromPath("public/src/data/data_short.csv", {headers:true})
  .on("data", function(row){
 	 allData.push(row);
  })
@@ -16,7 +16,7 @@ csv
  });
  
 csv
- .fromPath("bigplaces_latlng.csv")
+ .fromPath("public/src/data/bigplaces_latlng.csv")
  .on("data", function(row){
 	 var place = row[0] + "," + row[1];
 	 city_LL[place] = [parseFloat(row[2]),parseFloat(row[3])];
@@ -27,8 +27,9 @@ csv
 	 ready2 = true;
  });
  
+module.exports = {
 // taking conditions -> returns huge-### JSON of data stuff
-function JSONwithFilter(cond) {
+	JSONwithFilter: function(cond) {
 	console.log("hello");
 	var result = [];
 	if(!ready || !ready2) {
@@ -95,21 +96,21 @@ function JSONwithFilter(cond) {
 	}
 
 	return result;
-}
+},
 
-function countCity(city, classifier) {
-	var result = [];
-	if(!ready) {
-	} else {
-		for(var i = 0; i < allData.length; ++i) {
-			if(allData[i]['city'] == city) {
-				result.push(parseFloat(allData[i]['paid']));
+	countCity: function(city, classifier) {
+		var result = [];
+		if(!ready) {
+		} else {
+			for(var i = 0; i < allData.length; ++i) {
+				if(allData[i]['city'] == city) {
+					result.push(parseFloat(allData[i]['paid']));
+				}
 			}
 		}
-	}
-	return result.sort(function(a,b) { return a - b;});
- }
-
+		return result.sort(function(a,b) { return a - b;});
+	 }
+}
 /*
 const NS_PER_SEC = 1e9;
 app.get('/', function(req, res){
