@@ -32,9 +32,15 @@ label {
 	width:auto;
 }
 
-.histogram {
+#h_holder {
 	position: absolute;
 	z-index:4;
 	left:30vw;
 	top:50vh;
+}
+
+.histogram {
+	position: absolute;
+	z-index:4;
+
 }

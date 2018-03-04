@@ -41,8 +41,8 @@ function setup(){
 
 function createHistogramDiv(d){
 	var name = "h-"+String(histograms.length);
-	var tmp = createCanvas(200, 500);
-	tmp.parent('view');
+	var tmp = createDiv(200, 500);
+	tmp.parent('h_holder');
 	// tmp.class("histogram");
 	// histograms.push(tmp);
 
