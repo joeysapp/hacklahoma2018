@@ -6,7 +6,7 @@ var ready2 = false;
 var city_LL = {};
 
 var placenames = [];
-var returning_data = [];
+var returning_data = {};
 
 
 csv
@@ -113,6 +113,8 @@ module.exports = {
 			}
 		}
 	}
+	var max_count = 0;
+	var max_price = 0;
 	var count = {};
 	var ag_price = {};
 	var ag_type = {};
@@ -137,10 +139,15 @@ module.exports = {
 							"num" : count, "gold" : gold, "silver" : silver, "bronze" : bronze,
 							"platinum" : plat, "lat" : lat, "lng" : lng }
 			result.push(element)
+			
+			if (count > max_count)
+				max_count = count;
+			if (avg_cost > max_price)
+				max_price = avg_cost;
 		}
 	}
 	// console.log(result.length);
-	this.returning_data = result;
+	this.returning_data	= { 'max_count' : max_count, 'max_price' : max_price, 'list' : result };
 	return result;
 },
 
@@ -201,6 +208,7 @@ module.exports = {
 			ind_ = 29;
 		result[ind_] += 1;
 	}
+	this.returning_data = { 'name' : location, 'list' : result };
 	return result;
 }
 /*
