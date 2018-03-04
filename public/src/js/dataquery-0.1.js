@@ -147,10 +147,12 @@ module.exports = {
 		var location = cond.location;
 		var location_split = location.split(',');
 
+		// talk about safety
+		if (typeof location_split === 'undefined') return;
+
 		var city = location_split[0].trim();
 		var state = location_split[1].trim();
 
-	
 		var result = [];
 		for(var i = 0; i < 30; ++i) {
 			result.push(0);
@@ -216,7 +218,6 @@ module.exports = {
 			}
 		}
 
-		console.log("filtered["+filtered.length+"]: " + filtered);
 		var fil_min = filtered[0];
 		var fil_max = filtered[1];
 		for (var i = 0; i < filtered.length; i++){
@@ -227,26 +228,16 @@ module.exports = {
 				fil_max = item;
 			}
 		}
-
-		var bins = 30;
+		var bins = Math.ceil((fil_max-fil_min+1)/filtered.length);
 		var histogram = [];
 		for (var i = 0; i < bins; i++){
-			console.log("adding "+i);
 			histogram[i] = 0;
 		}
 		for (var i = 0; i < filtered.length; i++){
-			console.log("ADDING AGAIN, "+i);
-			histogram[Math.floor((filtered[i] - fil_min))] += 1;
+			histogram[Math.floor((filtered[i] - fil_min)/filtered.length)] += 1;
 		}
-		return histogram;
 
-		// for(var i = 0; i < filtered.length; ++i) {
-		// 	var ind_ = Math.round(filtered[i] / 10);
-		// 	if (ind_ > 29) 
-		// 		ind_ = 29;
-		// 	result[ind_] += 1;
-		// }
-		// return result;
+		return histogram;
 }
 /*
 const NS_PER_SEC = 1e9;

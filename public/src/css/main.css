@@ -31,3 +31,10 @@ label {
 	height:auto;
 	width:auto;
 }
+
+.histogram {
+	position: absolute;
+	z-index:4;
+	left:30vw;
+	top:50vh;
+}

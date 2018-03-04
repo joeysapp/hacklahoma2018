@@ -6,6 +6,7 @@ var globe_img;
 var socket;
 var town_names = [];
 var asc_names = [];
+var histograms = []
 
 // used for camera / lat,lng -> x,y,z
 var R = 600;
@@ -15,6 +16,9 @@ function setup(){
 	socket.on('updatePoints', function(data){
 		getCartesianCoords(data);
 	});
+	socket.on('createHistogram', function(data){
+		createHistogramDiv(data);
+	})
 
 	town_names = loadTable('src/data/all_places.csv', autocompletePopulate);
 
@@ -30,6 +34,17 @@ function setup(){
 	// Globe image last
 	// globe_img = loadImage('src/data/1024x512.jpg', function(i){ globe_img = i; });
 	globe_img = loadImage('src/data/earth.jpg', function(i){ globe_img = i; });
+}
+
+function createHistogramDiv(d){
+	var name = "h-"+String(histograms.length);
+	var tmp = createCanvas(200, 500);
+	tmp.parent('view');
+	// tmp.class("histogram");
+	// histograms.push(tmp);
+
+
+
 }
 
 function autocompletePopulate(d){
@@ -100,7 +115,7 @@ function submitOptions(event){
 
 function getCartesianCoords(data){
 	// maybe data = data.list?
-	
+
 	for (var key in data){
 		var lat = data[key].lat;
 		var lon = data[key].lng;
