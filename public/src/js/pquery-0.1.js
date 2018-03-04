@@ -20,14 +20,29 @@ function setup(){
 	cam = new Dw.EasyCam(this._renderer, {distance:(R*2), center:[0,0,0]});
 	col = color(200, 50, 50);
 
-	globe_img = loadImage('src/data/dummy-map.jpg', function(i){ g = new Globe(i,4) });
+	globe_img = loadImage('src/data/dummy-map.jpg', function(i){ g = i; });
 }
 
 function draw(){
 	background(col);
 	fill(255);
-	if (g)
-	g.display();
+
+	stroke(255, 0, 0);
+	strokeWeight(8);
+	line(0, 0, 0, R*2, 0, 0);
+
+	stroke(0, 255, 0);
+	line(0, 0, 0, 0, R*2, 0);
+
+	stroke(0, 0, 255);
+	line(0, 0, 0, 0, 0, R*2);
+
+	if (g){
+		push();
+		texture(g);
+		sphere(R);
+		pop();
+	}
 }
 
 // This may be different depending on how
