@@ -18,7 +18,11 @@ io.on('connection', function(socket){
 	socket.on('submitOptions', function(data){
 		csv_query.JSONwithFilter(data);
 		socket.emit('updatePoints', csv_query.returning_data);
+	});
 
+	socket.on('listPopulation', function(data){
+		csv_query.JSONwithFilter(data);
+		socket.emit('updateList', csv_query.placenames);
 	});
 });
 

@@ -4,6 +4,7 @@ var options = [];
 var cur_coords = [];
 var globe_img;
 var socket;
+var town_names;
 
 // used for camera / lat,lng -> x,y,z
 var R = 600;
@@ -13,6 +14,8 @@ function setup(){
 	socket.on('updatePoints', function(data){
 		getCartesianCoords(data);
 	});
+
+	town_names = loadTable('src/data/all_places.csv', autocompletePopulate);
 
 	// Main p5 canvas and population options div
 	globe = createCanvas(windowWidth, windowHeight, WEBGL);
@@ -26,6 +29,14 @@ function setup(){
 	// Globe image last
 	// globe_img = loadImage('src/data/1024x512.jpg', function(i){ globe_img = i; });
 	globe_img = loadImage('src/data/earth.jpg', function(i){ globe_img = i; });
+}
+
+function autocompletePopulate(d){
+	for (var i = 0; i < d.getRowCount(); i++){
+		// console.log(d.getString(i,0));
+		// places.push(d.get)
+	}
+
 }
 
 function draw(){
@@ -47,9 +58,6 @@ function draw(){
 	cur_coords.forEach(function(e,idx){
 		e.display();
 	})
-
-
-
 }
 
 // Used when the go! button (#submit_i) is clicked
@@ -72,9 +80,10 @@ function submitOptions(event){
 
 		// We could do some verification on the node side to check
 		// for stuff
-		'income': options[0].value()
+		// 'income': options[0].value()
 	}
 	socket.emit('submitOptions', data);
+	// cur_coords = [];
 
 }
 
@@ -135,10 +144,10 @@ function toCartesian(lat, lon, price, num){
 }
 
 function createOptions(){ 
-	var location = createInput();
-	location.id('#location');
-	location.parent('#location_i');
-	options.push(location);
+	// var location = createInput();
+	// location.id('#location');
+	// location.parent('#location_i');
+	// options.push(location);
 
 	var submit = createButton('go!');
 	submit.parent('#submit_i');
