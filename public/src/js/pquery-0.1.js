@@ -110,7 +110,8 @@ function getCartesianCoords(data){
 		var lat = data[key].lat;
 		var lon = data[key].lng;
 		var price = data[key].avg_cost;
-		var new_dp = toCartesian(lat,lon,price);
+		var num = data[key].num;
+		var new_dp = toCartesian(lat,lon,price,num);
 		cur_coords.push(new_dp);
 	}
 }
@@ -128,7 +129,7 @@ function cartesianHelper(lat, lon){
 	return createVector(-cx, -cz, cy);
 }
 
-function toCartesian(lat, lon, price){
+function toCartesian(lat, lon, price, num){
 	var alt = R;
 
 	var rlat = radians(lat);
@@ -146,7 +147,9 @@ function toCartesian(lat, lon, price){
 	raxis = raxis.normalize();
 	var tmp = pos.copy();
 
-	var new_height = map(price, 0, 300, 1, 1.5);
+	console.log(num);
+	//var new_height = map(price, 0, 300, 0.9, 1.4);
+	var new_height = map(num, 0, 50, 1.0, 1.2);
 
 	tmp.mult(new_height);
 	// raxis.mult(h);
