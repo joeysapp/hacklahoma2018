@@ -2,23 +2,24 @@ var csv = require("fast-csv");
 
 var allData = [];
 var ready = false;
-var ready2 = false;
 var city_LL = {};
 
+var ready2 = false;
 var placenames = [];
 var returning_data = {};
 
 
-csv
- .fromPath("public/src/data/all_places.csv")
- .on("data", function(row){
-	 placenames.push(row[0] + ", " + row[1]);
- })
- .on("end", function(){
-	 console.log("loaded placenames")
-	 // DO SOMETHING WITH PLACENAMES W/ JQUERY
-	 // foo("rawr");
- });
+// csv
+//  .fromPath("public/src/data/all_places.csv")
+//  .on("data", function(row){
+// 	 placenames.push(row[0] + ", " + row[1]);
+//  })
+//  .on("end", function(){
+// 	 console.log("loaded placenames");
+// 	 socket.emit(listPopulation);
+
+// 	 // DO SOMETHING WITH PLACENAMES W/ JQUERY
+//  });
  
 csv
  .fromPath("public/src/data/data_short.csv", {headers:true})

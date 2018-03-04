@@ -4,6 +4,8 @@ var options = [];
 var cur_coords = [];
 var globe_img;
 var socket;
+var town_names = [];
+var asc_names = [];
 
 // used for camera / lat,lng -> x,y,z
 var R = 600;
@@ -13,6 +15,8 @@ function setup(){
 	socket.on('updatePoints', function(data){
 		getCartesianCoords(data);
 	});
+
+	town_names = loadTable('src/data/all_places.csv', autocompletePopulate);
 
 	// Main p5 canvas and population options div
 	globe = createCanvas(windowWidth, windowHeight, WEBGL);
@@ -26,6 +30,21 @@ function setup(){
 	// Globe image last
 	// globe_img = loadImage('src/data/1024x512.jpg', function(i){ globe_img = i; });
 	globe_img = loadImage('src/data/earth.jpg', function(i){ globe_img = i; });
+}
+
+function autocompletePopulate(d){
+	for (var i = 0; i < d.getRowCount(); i++){
+		var name = d.getString(i,0)+", "+d.getString(i,1);
+		// console.log(d.getString(i,0));
+		// places.push(d.get)
+		asc_names.push(name);
+	}
+
+	var input = document.getElementById("location_id");
+	var asc = new Awesomplete(input);
+
+	asc.list = asc_names;
+
 }
 
 function draw(){
@@ -47,9 +66,6 @@ function draw(){
 	cur_coords.forEach(function(e,idx){
 		e.display();
 	})
-
-
-
 }
 
 // Used when the go! button (#submit_i) is clicked
@@ -72,9 +88,13 @@ function submitOptions(event){
 
 		// We could do some verification on the node side to check
 		// for stuff
-		'income': options[0].value()
+		'location': $('#location_id').val()
+		// 'income': options[0].value()
 	}
+	console.log(data);
+	$('#location_id').val('');
 	socket.emit('submitOptions', data);
+	// cur_coords = [];
 
 }
 
@@ -120,7 +140,6 @@ function toCartesian(lat, lon, price, num){
 	raxis = raxis.normalize();
 	var tmp = pos.copy();
 
-	console.log(num);
 	//var new_height = map(price, 0, 300, 0.9, 1.4);
 	var new_height = map(num, 0, 50, 1.0, 1.2);
 
@@ -135,10 +154,10 @@ function toCartesian(lat, lon, price, num){
 }
 
 function createOptions(){ 
-	var location = createInput();
-	location.id('#location');
-	location.parent('#location_i');
-	options.push(location);
+	// var location = createInput();
+	// location.id('#location');
+	// location.parent('#location_i');
+	// options.push(location);
 
 	var submit = createButton('go!');
 	submit.parent('#submit_i');
