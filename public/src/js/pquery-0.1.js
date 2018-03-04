@@ -60,9 +60,7 @@ function autocompletePopulate(d){
 
 	var input = document.getElementById("location_id");
 	var asc = new Awesomplete(input);
-
 	asc.list = asc_names;
-
 }
 
 function draw(){
@@ -132,8 +130,6 @@ function eliminate(index) {
 }
 
 function getCartesianCoords(data){
-	// maybe data = data.list?
-
 	for (var key in data){
 		var lat = data[key].lat;
 		var lon = data[key].lng;

@@ -18,12 +18,12 @@ io.on('connection', function(socket){
 	socket.on('submitOptions', function(data){
 		if (data.location == ''){
 			csv_query.JSONwithFilter(data);
-			socket.emit('updatePoints', csv_query.returning_data);
+			socket.emit('updatePoints', csv_query.returning_data['list']);
 		} else {
 			console.log(csv_query.cityHistogram(data));
 
 			// This goes in pquery if we have time
-			socket.emit('createHistogram', csv_query.returning_data);
+			socket.emit('createHistogram', csv_query.returning_data['list']);
 		}
 	});
 	// socket.on('listPopulation', function(data){
