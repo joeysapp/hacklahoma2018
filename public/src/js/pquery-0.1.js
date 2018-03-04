@@ -31,7 +31,7 @@ function setup(){
 
 
 	cam = createEasyCam();
-	col = color(255, 0, 0);
+	col = color(200, 50, 50);
 }
 
 function optionChange(e){
@@ -39,13 +39,11 @@ function optionChange(e){
 	// console.log(e.path[1]);
 	if (typeof this.value() !== 'undefined'){
 		console.log("Value: "+this.value());
-		col = color(map(this.value(), 0, 1000, 0, 255), 0, 0);
+		col = color(map(this.value(), 0, 1000, 0, 255), 50, 50);
 	} else {
 		console.log("Checked: "+this.checked());
-
 	}
 }
-
 
 function draw(){
 	background(col);
@@ -58,13 +56,10 @@ function windowResized(){
 	globe.size(windowWidth, windowHeight);
 }
 
-$(document).ready(function(){
-   var $form = $('foo');
-   $form.submit(function(){
-      $.post($(this).attr('action'), $(this).serialize(), function(response){
-            // do something here on success
-            console.log("hello");
-      },'json');
-      return false;
-   });
-});
+function toCartesian(lat, lon){
+	var r = 6.371;
+	var x = r*cos(lat)*cos(lon);
+	var y = r*cos(lat)*sin(lon);
+	var z = r*sin(lat);
+	return {x,y,z}
+}
