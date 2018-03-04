@@ -23,8 +23,8 @@ function setup(){
 
 	cam = new Dw.EasyCam(this._renderer, {distance:(R*2), center:[0,0,0]});
 
-	globe_img = loadImage('src/data/earth.jpg', function(i){ g = i; });
-	// globe_img = loadImage('src/data/1024x512.png', function(i){ g = i; });
+	// globe_img = loadImage('src/data/earth.jpg', function(i){ g = i; });
+	globe_img = loadImage('src/data/1024x512.png', function(i){ g = i; });
 }
 
 function draw(){
