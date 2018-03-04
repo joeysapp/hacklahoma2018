@@ -7,6 +7,7 @@ var socket;
 var town_names = [];
 var asc_names = [];
 var histograms = []
+var height_button;
 
 var town_id = {};
 var id_fresh = {};
@@ -21,7 +22,16 @@ function setup(){
 	});
 	socket.on('createHistogram', function(data){
 		createHistogramDiv(data);
-	})
+	});
+
+	height_button = createButton('Height toggle');
+	height_button.id('height_button');
+	height_button.parent('bruces_nice_button');
+	height_button.style('position:absolute; right:0px; z-index:4; top:0px');
+	height_button.mousePressed(function(e){
+		console.log('hi');
+		bruces_handy_global_height_variable = !bruces_handy_global_height_variable;
+	});
 
 	town_names = loadTable('src/data/all_places.csv', autocompletePopulate);
 
