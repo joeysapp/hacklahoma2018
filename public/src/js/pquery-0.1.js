@@ -5,10 +5,6 @@ var cur_coords = [];
 var globe_img;
 var socket;
 
-// Testing out geojson city data
-var us_cities;
-var us_cities_objs = [];
-
 // used for camera / lat,lng -> x,y,z
 var R = 600;
 
@@ -22,31 +18,10 @@ function setup(){
 	globe = createCanvas(windowWidth, windowHeight, WEBGL);
 	globe.parent('view');
 	globe.style("position: absolute; top: 0px;");
-	createOptions(makeAutocomplete);
+	createOptions();
 
 	// PeasyCam port
 	cam = new Dw.EasyCam(this._renderer, {distance:(R*2), center:[0,0,0], rotation:[1,0,0,0]});
-
-	// Testing out geojson city data!
-	// us_cities = loadJSON('src/data/all_cities.json', function(data){
-	// 	var i = 0;
-	// 	data["features"].some(function(element,idx){
-	// 		i += 1;
-	// 		if (i > 5000){ return; }
-	// 		var coords = [];
-	// 		var name = element.properties.NAME;
-
-	// 		element.geometry.coordinates[0].forEach(function(coord){
-	// 			coords.push(cartesianHelper(coord[1], coord[0]));
-	// 		})
-
-	// 		i += 1;
-	// 		// console.log(element);
-			
-	// 		us_cities_objs.push(new City(coords, name));
-	// 	});
-	// 	console.log(us_cities_objs.length);
-	// });
 
 	// Globe image last
 	// globe_img = loadImage('src/data/1024x512.jpg', function(i){ globe_img = i; });
@@ -73,9 +48,7 @@ function draw(){
 		e.display();
 	})
 
-	us_cities_objs.forEach(function(e,idx){
-		e.display();
-	});
+
 
 }
 
@@ -171,7 +144,6 @@ function createOptions(){
 	submit.parent('#submit_i');
 	submit.mousePressed(submitOptions);
 
-
 	var clear = createButton('clear');
 	clear.parent('#submit_i');
 	clear.mousePressed(clearPoints);
@@ -198,17 +170,32 @@ class DataPoint {
 	}
 }
 
-function makeAutocomplete(){
-	var input = document.getElementById("location");
 
-	// Show label but insert value into the input:
-
-
-}
 
 function windowResized(){
 	globe.size(windowWidth, windowHeight);
 }
+
+// Testing out geojson city data!
+// us_cities = loadJSON('src/data/all_cities.json', function(data){
+// 	var i = 0;
+// 	data["features"].some(function(element,idx){
+// 		i += 1;
+// 		if (i > 5000){ return; }
+// 		var coords = [];
+// 		var name = element.properties.NAME;
+
+// 		element.geometry.coordinates[0].forEach(function(coord){
+// 			coords.push(cartesianHelper(coord[1], coord[0]));
+// 		})
+
+// 		i += 1;
+// 		// console.log(element);
+		
+// 		us_cities_objs.push(new City(coords, name));
+// 	});
+// 	console.log(us_cities_objs.length);
+// });
 
 
 

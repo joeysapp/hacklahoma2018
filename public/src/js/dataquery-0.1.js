@@ -6,15 +6,18 @@ var ready2 = false;
 var city_LL = {};
 
 var placenames = [];
+var returning_data = [];
+
 
 csv
- .fromPath("public/src/data/all_places.csv", {headers:true})
+ .fromPath("public/src/data/all_places.csv")
  .on("data", function(row){
 	 placenames.push(row[0] + ", " + row[1]);
  })
  .on("end", function(){
 	 console.log("loaded placenames")
 	 // DO SOMETHING WITH PLACENAMES W/ JQUERY
+	 // foo("rawr");
  });
  
 csv
@@ -70,9 +73,8 @@ module.exports = {
 	var cond_pop_min = 0.0;
 	var cond_pop_max = 10.0;
 	
-	console.log(cond_married, cond_sex, cond_income_min, cond_income_max, cond_age_min, cond_age_max);
+	// console.log(cond_married, cond_sex, cond_income_min, cond_income_max, cond_age_min, cond_age_max);
 	
-	//console.log("hello");
 	var result = [];
 	if(!ready || !ready2) {
 		return result;
@@ -137,7 +139,8 @@ module.exports = {
 			result.push(element)
 		}
 	}
-	//console.log(result.length);
+	// console.log(result.length);
+	this.returning_data = result;
 	return result;
 },
 
@@ -250,3 +253,4 @@ var server = app.listen(8080, function () {
    console.log("Example app listening at http://%s:%s", host, port)
 })
 */
+}
