@@ -30,7 +30,24 @@ csv
 module.exports = {
 // taking conditions -> returns huge-### JSON of data stuff
 	JSONwithFilter: function(cond) {
-	console.log("hello");
+	//console.log(cond);
+	var cond_married = -1;
+	if(cond['married_t']) cond_married = 1;
+	if(cond['married_f']) cond_married = 0;
+	
+	var cond_sex = -1;
+	if(cond['gender_m']) cond_married = 1;
+	if(cond['gender_f']) cond_married = 0;
+	
+	var cond_income_max = cond['income_high'];
+	var cond_income_min = cond['income_low'];
+	
+	var cond_age_max = cond['age_high'];
+	var cond_age_min = cond['age_low'];
+	
+	console.log(cond_married, cond_sex, cond_income_min, cond_income_max, cond_age_min, cond_age_max);
+	
+	//console.log("hello");
 	var result = [];
 	if(!ready || !ready2) {
 		return result;
@@ -42,14 +59,12 @@ module.exports = {
 		var sex_ = parseInt(allData[i]['sex']);
 		var income_ = parseFloat(allData[i]['income']);
 		var age_ = parseInt(allData[i]['age']);
-		if((cond['married'] == -1 || 
-			married_ == cond['married'])
-			&& (cond['sex'] == -1 || 
-				sex_ == cond['sex'])
-			&& (cond['min_income'] <= income_)
-			&& (cond['max_income'] >= income_)
-			&& (cond['min_age'] <= age_)
-			&& (cond['max_age'] >= age_)) {
+		if((cond_married == -1 ||  married_ == cond_married)
+			&& (cond_sex == -1 ||  sex_ == cond_sex)
+			&& (cond_income_min <= income_)
+			&& (cond_income_max >= income_)
+			&& (cond_age_min <= age_)
+			&& (cond_age_max  >= age_)) {
 			var place = allData[i]['city'] + "," + allData[i]['state'];
 			var paid = parseFloat(allData[i]['paid']);
 			var bsgp = [allData[i]['bronze']==allData[i]['paid'],
@@ -94,7 +109,7 @@ module.exports = {
 			result.push(element)
 		}
 	}
-
+	//console.log(result.length);
 	return result;
 },
 

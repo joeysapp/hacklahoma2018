@@ -18,8 +18,8 @@ io.on('connection', function(socket){
 	// socket.emit('Connected', {msg: "You're connected!"});
 	socket.on('submitOptions', function(data){
 		console.log(data);
-		csv_query.JSONwithFilter(function(data){
-			console.log("Complete"+data);
+		csv_query.JSONwithFilter(data,function(res){
+			console.log("Complete"+res);
 		});
 		// Send the data to Bruce's SQL stuff!
 
