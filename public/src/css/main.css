@@ -1,8 +1,21 @@
 body {
 	margin: 0;
+	font-size:2em;
 }
 
-#holder {
-	
+#view {
+	width:100vw;
+	height:100vh;	
+}
 
+#opt {
+	padding:0.5em;
+	margin:0.5em;
+	background-color:lightgrey;
+	z-index:3;
+	position: absolute;
+	font-size:1.3em;
+	top: 0px;
+	height:auto;
+	width:auto;
 }
