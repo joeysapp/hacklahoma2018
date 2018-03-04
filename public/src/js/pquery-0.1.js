@@ -64,7 +64,7 @@ function autocompletePopulate(d){
 }
 
 function draw(){
-	background(255);
+	background(0,153,204);
 	rotateY(PI + PI/16);
 	rotateX(PI/5);
 
@@ -162,8 +162,8 @@ function cartesianHelper(lat, lon){
 }
 
 function calcHeight(attr) {
-	//return map(attr.num, 0, 50, 1.025, 1.4);
-	return map(attr.price, 0, 700, 0.9, 1.4);
+	//return map(attr.num, 0, 50, 1.025, 1.5);
+	return map(attr.price, 0, 750, 0.96, 1.5);
 }
 
 function updatePoint(index, attr) {
@@ -175,6 +175,7 @@ function updatePoint(index, attr) {
 	new_raxis.add(tmp);
 	
 	cur_coords[index].r = new_raxis;
+	cur_coords[index].h = new_height;
 }
 
 function toCartesian(lat, lon, attr){
@@ -202,7 +203,7 @@ function toCartesian(lat, lon, attr){
 	raxis.add(tmp);
 	// var data = { 'x': -cx, 'y': -cz, 'z' : cy, 'rx': raxis.x, 'ry': raxis.y, 'rz': raxis.z, 'ab': angleb};
 
-	var tmp = new DataPoint(pos,raxis,angleb);
+	var tmp = new DataPoint(pos,raxis,angleb,new_height);
 	return tmp;
 }
 
@@ -228,17 +229,18 @@ function clearPoints(){
 }
 
 class DataPoint {
-	constructor(pos,r,ab) {
+	constructor(pos,r,ab,new_height) {
 		this.online = true;
 		this.pos = pos;
 		this.r = r;
 		this.ab = ab;
+		this.h = new_height;
 	}
 
 	display(){
-		if(this.online) {
-			line(this.pos.x,this.pos.y,this.pos.z,this.r.x,this.r.y,this.r.z);
-		}
+		var c = map(this.h,0.95,1.20,0,255);
+		stroke(color(255-c,255,c));
+		line(this.pos.x,this.pos.y,this.pos.z,this.r.x,this.r.y,this.r.z);
 	}
 }
 
