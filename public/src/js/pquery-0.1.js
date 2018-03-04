@@ -9,6 +9,7 @@ var asc_names = [];
 var histograms = []
 var height_button;
 
+var height_TOG = false;
 var town_id = {};
 var id_fresh = {};
 
@@ -30,7 +31,10 @@ function setup(){
 	height_button.style('position:absolute; right:0px; z-index:4; top:0px');
 	height_button.mousePressed(function(e){
 		console.log('hi');
-		bruces_handy_global_height_variable = !bruces_handy_global_height_variable;
+		height_TOG = !height_TOG;
+		for(var i = 0; i < cur_coords.length; ++i) {
+			updatePoint(i,cur_coords[i].attr);
+		}
 	});
 
 	town_names = loadTable('src/data/all_places.csv', autocompletePopulate);
@@ -128,6 +132,7 @@ function eliminate(index) {
 	var new_raxis = cur_coords[index].r.copy().normalize();
 	new_raxis.mult(0.01);
 	cur_coords[index].r = new_raxis;
+	cur_coords[index].attr = { price: -500, num : -2000};
 }
 
 function getCartesianCoords(data){
@@ -163,8 +168,11 @@ function cartesianHelper(lat, lon){
 }
 
 function calcHeight(attr) {
-	return map(attr.num, 0, 10000, 1.025, 1.5);
-	//return map(attr.price, 0, 750, 0.96, 1.5);
+	if(height_TOG) {
+		return map(attr.num, -2000, 10000, 0.95, 1.5);
+	} else {
+		return map(attr.price, 0, 750, 0.98, 1.5);
+	}
 }
 
 function updatePoint(index, attr) {
@@ -177,6 +185,7 @@ function updatePoint(index, attr) {
 	
 	cur_coords[index].r = new_raxis;
 	cur_coords[index].h = new_height;
+	cur_coords[index].attr = attr;
 }
 
 function toCartesian(lat, lon, attr){
@@ -204,7 +213,7 @@ function toCartesian(lat, lon, attr){
 	raxis.add(tmp);
 	// var data = { 'x': -cx, 'y': -cz, 'z' : cy, 'rx': raxis.x, 'ry': raxis.y, 'rz': raxis.z, 'ab': angleb};
 
-	var tmp = new DataPoint(pos,raxis,angleb,new_height);
+	var tmp = new DataPoint(pos,raxis,angleb,new_height,attr);
 	return tmp;
 }
 
@@ -230,12 +239,13 @@ function clearPoints(){
 }
 
 class DataPoint {
-	constructor(pos,r,ab,new_height) {
+	constructor(pos,r,ab,new_height,attr) {
 		this.online = true;
 		this.pos = pos;
 		this.r = r;
 		this.ab = ab;
 		this.h = new_height;
+		this.attr = attr;
 	}
 
 	display(){
