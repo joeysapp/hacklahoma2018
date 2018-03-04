@@ -21,6 +21,7 @@
   "homepage": "https://github.com/joeysapp/hacklahoma2018#readme",
   "dependencies": {
     "express": "^4.16.2",
+    "fast-csv": "^2.4.1",
     "socket.io": "^2.0.4"
   }
 }
