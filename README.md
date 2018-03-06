@@ -12,12 +12,12 @@ A user visiting vquery is greeted by a projection of our globe with a panel of s
 ```
 1. jquery:		specify options (optional)
 2. jquery: 		press go!
-3. javascript:	client-side socket emit
+3. javascript:		client-side socket emit
 4. node:		server-side on-receive send db response
-5. javascript:	client-side on-receive store db response
-				* jsonify lat/long
-				* lat/long -> x,y,z
-				* calculate normals, heights of line
+5. javascript:		client-side on-receive store db response
+		* jsonify lat/long
+		* lat/long -> x,y,z
+		* calculate normals, heights of line
 6. p5.js:		draws globe and current data
 ```
 
