@@ -9,7 +9,7 @@ vquery is a web-based visualization of a dummy insurance data set. We provie a s
 Written and developed using primarily Javascript, __vquery__ utilizes multiple frameworks such as _node_, _express_, _p5.js_ and _socket.io_. These allowed us to develop for multiple platforms while having quick turn-over time.
 
 A user visiting vquery is greeted by a projection of our globe with a panel of search options. The dataflow is as follows:
-> _jquery_ specify options (optional)
+``` _jquery_ specify options (optional)
 1. _jquery_ press go!
 1. _js_ client-side socket emit
 1. _js-node_ server-side on-receive send db response
@@ -18,6 +18,7 @@ A user visiting vquery is greeted by a projection of our globe with a panel of s
 	1. lat/long -> x,y,z
 	1. calculate normals, heights of line
 1. _p5.js_ draws globe and current data
+```
 
 Upon querying your local browser instance, the options are sent from the client to our _node.js_ instance running in the background using _socket.io_.
 
